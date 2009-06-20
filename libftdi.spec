@@ -8,6 +8,7 @@ Group:		Libraries
 Source0:	http://www.intra2net.com/de/produkte/opensource/ftdi/TGZ/%{name}-%{version}.tar.gz
 # Source0-md5:	524af6f39aefa1a4e8fac12c6be0ed06
 URL:		http://www.intra2net.com/de/produkte/opensource/ftdi/
+BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libusb-devel >= 0.1.7
 Requires:	libusb >= 0.1.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,7 +52,8 @@ Statyczna biblioteka libftdi.
 %setup -q
 
 %build
-%configure
+%configure \
+	--with-boost-libdir=%{_libdir}
 %{__make}
 
 %install
