@@ -9,8 +9,7 @@ Source0:	http://www.intra2net.com/de/produkte/opensource/ftdi/TGZ/%{name}-%{vers
 # Source0-md5:	524af6f39aefa1a4e8fac12c6be0ed06
 URL:		http://www.intra2net.com/de/produkte/opensource/ftdi/
 BuildRequires:	boost-devel >= 1.33
-BuildRequires:	libusb-devel >= 0.1.7
-Requires:	libusb >= 0.1.7
+BuildRequires:	libusb-compat-devel >= 0.1.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -28,7 +27,7 @@ Summary:	Header files for libftdi library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libftdi
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libusb-devel >= 0.1.7
+Requires:	libusb-compat-devel >= 0.1.0
 
 %description devel
 Header files for libftdi library.
