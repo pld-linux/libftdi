@@ -1,13 +1,13 @@
 Summary:	Library to talk to FTDI's chips including the popular bitbang mode
 Summary(pl.UTF-8):	Biblioteka do komunikacji z układami FTDI włącznie z trybem bitbang
 Name:		libftdi
-Version:	0.16
+Version:	0.18
 Release:	1
-License:	LGPL v2.1
+License:	LGPL v2 (libftdi), GPL v2 with linking exception (libftdipp)
 Group:		Libraries
-Source0:	http://www.intra2net.com/de/produkte/opensource/ftdi/TGZ/%{name}-%{version}.tar.gz
-# Source0-md5:	524af6f39aefa1a4e8fac12c6be0ed06
-URL:		http://www.intra2net.com/de/produkte/opensource/ftdi/
+Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
+# Source0-md5:	916f65fa68d154621fc0cf1f405f2726
+URL:		http://www.intra2net.com/en/developer/libftdi/
 BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libusb-compat-devel >= 0.1.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -74,16 +74,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog README
+%doc AUTHORS ChangeLog README
+%attr(755,root,root) %{_bindir}/baud_test
 %attr(755,root,root) %{_bindir}/bitbang
 %attr(755,root,root) %{_bindir}/bitbang2
 %attr(755,root,root) %{_bindir}/bitbang_cbus
 %attr(755,root,root) %{_bindir}/bitbang_ft2232
 %attr(755,root,root) %{_bindir}/ftdi_find_all
 %attr(755,root,root) %{_bindir}/find_all_pp
+%attr(755,root,root) %{_bindir}/serial_read
 %attr(755,root,root) %{_libdir}/libftdi.so.*.*.*
-%attr(755,root,root) %{_libdir}/libftdipp.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libftdi.so.1
+%attr(755,root,root) %{_libdir}/libftdipp.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libftdipp.so.1
 
 %files devel
