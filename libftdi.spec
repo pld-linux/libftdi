@@ -1,26 +1,38 @@
 Summary:	Library to talk to FTDI's chips including the popular bitbang mode
 Summary(pl.UTF-8):	Biblioteka do komunikacji z układami FTDI włącznie z trybem bitbang
 Name:		libftdi
-Version:	0.18
+Version:	0.19
 Release:	1
 License:	LGPL v2
 Group:		Libraries
 Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
-# Source0-md5:	916f65fa68d154621fc0cf1f405f2726
+# Source0-md5:	e6e25f33b4327b1b7aa1156947da45f3
 URL:		http://www.intra2net.com/en/developer/libftdi/
 BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libusb-compat-devel >= 0.1.0
+BuildRequires:	python-devel >= 2.0
+BuildRequires:	swig-python
+BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-libftdi is a library (using libusb) to talk to FTDI's FT232BM/245BM,
-FT2232C/D and FT232/245R type chips including the popular bitbang
-mode.
+libftdi is a library (using libusb) to talk to FTDI's UART/FIFO chips
+including the popular bitbang mode. The following chips are supported:
+- FT4232H / FT2232H
+- FT232R  / FT245R
+- FT2232L / FT2232D / FT2232C
+- FT232BM / FT245BM (and the BL/BQ variants)
+- FT8U232AM / FT8U245AM
 
 %description -l pl.UTF-8
-libftdi to biblioteka (korzystająca z libusb) służąca do komunikacji z
-układami FTDI typu FT232BM/245BM, FT2232C/D i FT232/245R włącznie z
-popularnym trybem bitbang.
+libftdi to korzystająca z libusb biblioteka, służąca do komunikacji z
+układami FTDI typu UART/FIFO, włącznie z popularnym trybem bitbang.
+Obsługiwane są układy:
+- FT4232H / FT2232H
+- FT232R  / FT245R
+- FT2232L / FT2232D / FT2232C
+- FT232BM / FT245BM (wraz z wariantami BL/BQ)
+- FT8U232AM / FT8U245AM
 
 %package devel
 Summary:	Header files for libftdi library
@@ -91,11 +103,24 @@ Static libftdipp library.
 %description c++-static -l pl.UTF-8
 Statyczna biblioteka libftdipp.
 
+%package -n python-libftdi
+Summary:	Python binding for libftdi
+Summary(pl.UTF-8):	Wiązanie Pythona do libftdi
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python-libftdi
+Python binding for libftdi.
+
+%description -n python-libftdi -l pl.UTF-8
+Wiązanie Pythona do libftdi.
+
 %prep
 %setup -q
 
 %build
 %configure \
+	--enable-python-binding \
 	--with-boost-libdir=%{_libdir}
 %{__make}
 
@@ -111,6 +136,9 @@ rm -rf $RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT%{_bindir}/{find_all,ftdi_find_all}
 # functionally the same as find_all, just adds C++ dependency
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/find_all_pp
+
+%py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -161,3 +189,9 @@ rm -rf $RPM_BUILD_ROOT
 %files c++-static
 %defattr(644,root,root,755)
 %{_libdir}/libftdipp.a
+
+%files -n python-libftdi
+%defattr(644,root,root,755)
+%attr(755,root,root) %{py_sitedir}/_ftdi.so
+%{py_sitedir}/ftdi.py[co]
+%{py_sitedir}/libftdi-%{version}-py*.egg-info
