@@ -1,18 +1,20 @@
 Summary:	Library to talk to FTDI's chips including the popular bitbang mode
 Summary(pl.UTF-8):	Biblioteka do komunikacji z układami FTDI włącznie z trybem bitbang
 Name:		libftdi
-Version:	0.19
+Version:	0.20
 Release:	1
 License:	LGPL v2
 Group:		Libraries
 Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
-# Source0-md5:	e6e25f33b4327b1b7aa1156947da45f3
+# Source0-md5:	355d4474e3faa81b485d6a604b06951f
 URL:		http://www.intra2net.com/en/developer/libftdi/
 BuildRequires:	boost-devel >= 1.33
+BuildRequires:	libconfuse-devel
 BuildRequires:	libusb-compat-devel >= 0.1.0
 BuildRequires:	python-devel >= 2.0
 BuildRequires:	swig-python
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildConflicts:	libftdi-devel < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -120,6 +122,7 @@ Wiązanie Pythona do libftdi.
 
 %build
 %configure \
+	--enable-libftdipp \
 	--enable-python-binding \
 	--with-boost-libdir=%{_libdir}
 %{__make}
@@ -158,7 +161,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/bitbang_cbus
 %attr(755,root,root) %{_bindir}/bitbang_ft2232
 %attr(755,root,root) %{_bindir}/ftdi_find_all
-%attr(755,root,root) %{_bindir}/serial_read
+%attr(755,root,root) %{_bindir}/serial_test
 %attr(755,root,root) %{_libdir}/libftdi.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libftdi.so.1
 
