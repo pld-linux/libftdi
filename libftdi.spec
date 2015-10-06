@@ -5,6 +5,7 @@ Version:	0.20
 Release:	2
 License:	LGPL v2
 Group:		Libraries
+#Source0Download: http://www.intra2net.com/en/developer/libftdi/download.php
 Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
 # Source0-md5:	355d4474e3faa81b485d6a604b06951f
 URL:		http://www.intra2net.com/en/developer/libftdi/
