@@ -18,6 +18,7 @@ BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libconfuse-devel
 BuildRequires:	libusb-compat-devel >= 0.1.0
 BuildRequires:	python-devel >= 2.0
+BuildRequires:	python-modules >= 2.0
 BuildRequires:	swig-python
 BuildRequires:	rpmbuild(macros) >= 1.527
 BuildConflicts:	libftdi-devel < %{version}
