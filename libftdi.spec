@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	static_libs	# static libraries
+
 Summary:	Library to talk to FTDI's chips including the popular bitbang mode
 Summary(pl.UTF-8):	Biblioteka do komunikacji z układami FTDI włącznie z trybem bitbang
 Name:		libftdi
@@ -15,7 +19,7 @@ BuildRequires:	libconfuse-devel
 BuildRequires:	libusb-compat-devel >= 0.1.0
 BuildRequires:	python-devel >= 2.0
 BuildRequires:	swig-python
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.527
 BuildConflicts:	libftdi-devel < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -125,6 +129,7 @@ Wiązanie Pythona do libftdi.
 %build
 cp -f /usr/share/automake/config.sub .
 %configure \
+	%{__enable_disable static_libs static} \
 	--enable-libftdipp \
 	--enable-python-binding \
 	--with-boost-libdir=%{_libdir}
@@ -176,9 +181,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/ftdi.h
 %{_pkgconfigdir}/libftdi.pc
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libftdi.a
+%endif
 
 %files c++
 %defattr(644,root,root,755)
@@ -192,9 +199,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/ftdi.hpp
 %{_pkgconfigdir}/libftdipp.pc
 
+%if %{with static_libs}
 %files c++-static
 %defattr(644,root,root,755)
 %{_libdir}/libftdipp.a
+%endif
 
 %files -n python-libftdi
 %defattr(644,root,root,755)
