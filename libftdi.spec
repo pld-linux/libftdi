@@ -9,6 +9,7 @@ Group:		Libraries
 Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
 # Source0-md5:	355d4474e3faa81b485d6a604b06951f
 URL:		http://www.intra2net.com/en/developer/libftdi/
+BuildRequires:	automake
 BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libconfuse-devel
 BuildRequires:	libusb-compat-devel >= 0.1.0
@@ -122,6 +123,7 @@ Wiązanie Pythona do libftdi.
 %setup -q
 
 %build
+cp -f /usr/share/automake/config.sub .
 %configure \
 	--enable-libftdipp \
 	--enable-python-binding \
