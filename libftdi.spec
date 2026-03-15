@@ -18,7 +18,6 @@ URL:		http://www.intra2net.com/en/developer/libftdi/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	boost-devel >= 1.33
-BuildRequires:	libconfuse-devel
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel >= 0.1.0
 %{?with_python:BuildRequires:	python3-devel >= 1:3.2}
