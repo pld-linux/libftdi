@@ -158,6 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/{find_all,ftdi_find_all}
 # functionally the same as find_all, just adds C++ dependency
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/find_all_pp
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libftdi*.la
 
 %if %{with python}
 %py3_comp $RPM_BUILD_ROOT%{py3_sitedir}
@@ -190,7 +192,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/libftdi-config
 %{_libdir}/libftdi.so
-%{_libdir}/libftdi.la
 %{_includedir}/ftdi.h
 %{_pkgconfigdir}/libftdi.pc
 
@@ -208,7 +209,6 @@ rm -rf $RPM_BUILD_ROOT
 %files c++-devel
 %defattr(644,root,root,755)
 %{_libdir}/libftdipp.so
-%{_libdir}/libftdipp.la
 %{_includedir}/ftdi.hpp
 %{_pkgconfigdir}/libftdipp.pc
 
