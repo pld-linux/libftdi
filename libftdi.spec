@@ -183,13 +183,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/bitbang_ft2232
 %attr(755,root,root) %{_bindir}/ftdi_find_all
 %attr(755,root,root) %{_bindir}/serial_test
-%attr(755,root,root) %{_libdir}/libftdi.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libftdi.so.1
+%{_libdir}/libftdi.so.*.*.*
+%ghost %{_libdir}/libftdi.so.1
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/libftdi-config
-%attr(755,root,root) %{_libdir}/libftdi.so
+%{_libdir}/libftdi.so
 %{_libdir}/libftdi.la
 %{_includedir}/ftdi.h
 %{_pkgconfigdir}/libftdi.pc
@@ -202,12 +202,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files c++
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libftdipp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libftdipp.so.1
+%{_libdir}/libftdipp.so.*.*.*
+%ghost %{_libdir}/libftdipp.so.1
 
 %files c++-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libftdipp.so
+%{_libdir}/libftdipp.so
 %{_libdir}/libftdipp.la
 %{_includedir}/ftdi.hpp
 %{_pkgconfigdir}/libftdipp.pc
@@ -221,7 +221,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python}
 %files -n python3-libftdi
 %defattr(644,root,root,755)
-%attr(755,root,root) %{py3_sitedir}/_ftdi.cpython-*.so
+%{py3_sitedir}/_ftdi.cpython-*.so
 %{py3_sitedir}/ftdi.py
 %{py3_sitedir}/__pycache__/ftdi.cpython-*.py[co]
 %{py3_sitedir}/libftdi-%{version}-py*.egg-info
