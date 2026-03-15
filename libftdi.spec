@@ -6,21 +6,22 @@ Summary:	Library to talk to FTDI's chips including the popular bitbang mode
 Summary(pl.UTF-8):	Biblioteka do komunikacji z układami FTDI włącznie z trybem bitbang
 Name:		libftdi
 Version:	0.20
-Release:	5
+Release:	6
 License:	LGPL v2
 Group:		Libraries
 #Source0Download: http://www.intra2net.com/en/developer/libftdi/download.php
 Source0:	http://www.intra2net.com/en/developer/libftdi/download/%{name}-%{version}.tar.gz
 # Source0-md5:	355d4474e3faa81b485d6a604b06951f
+Patch0:		%{name}-python3.patch
 URL:		http://www.intra2net.com/en/developer/libftdi/
+BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libconfuse-devel
 BuildRequires:	libusb-compat-devel >= 0.1.0
-BuildRequires:	python-devel >= 2.0
-BuildRequires:	python-modules >= 2.0
-BuildRequires:	swig-python
+BuildRequires:	python3-devel
 BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	swig-python
 BuildConflicts:	libftdi-devel < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -112,23 +113,26 @@ Static libftdipp library.
 %description c++-static -l pl.UTF-8
 Statyczna biblioteka libftdipp.
 
-%package -n python-libftdi
-Summary:	Python binding for libftdi
-Summary(pl.UTF-8):	Wiązanie Pythona do libftdi
+%package -n python3-libftdi
+Summary:	Python 3 binding for libftdi
+Summary(pl.UTF-8):	Wiązanie Pythona 3 do libftdi
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 
-%description -n python-libftdi
-Python binding for libftdi.
+%description -n python3-libftdi
+Python 3 binding for libftdi.
 
-%description -n python-libftdi -l pl.UTF-8
-Wiązanie Pythona do libftdi.
+%description -n python3-libftdi -l pl.UTF-8
+Wiązanie Pythona 3 do libftdi.
 
 %prep
 %setup -q
+%patch -P0 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
+%{__autoconf}
+PYTHON=%{__python3} \
 %configure \
 	%{__enable_disable static_libs static} \
 	--enable-libftdipp \
@@ -149,8 +153,8 @@ mv $RPM_BUILD_ROOT%{_bindir}/{find_all,ftdi_find_all}
 # functionally the same as find_all, just adds C++ dependency
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/find_all_pp
 
-%py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
-%py_postclean
+%py3_comp $RPM_BUILD_ROOT%{py3_sitedir}
+%py3_ocomp $RPM_BUILD_ROOT%{py3_sitedir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -206,8 +210,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libftdipp.a
 %endif
 
-%files -n python-libftdi
+%files -n python3-libftdi
 %defattr(644,root,root,755)
-%attr(755,root,root) %{py_sitedir}/_ftdi.so
-%{py_sitedir}/ftdi.py[co]
-%{py_sitedir}/libftdi-%{version}-py*.egg-info
+%attr(755,root,root) %{py3_sitedir}/_ftdi.cpython-*.so
+%{py3_sitedir}/ftdi.py
+%{py3_sitedir}/__pycache__/ftdi.cpython-*.py[co]
+%{py3_sitedir}/libftdi-%{version}-py*.egg-info
+

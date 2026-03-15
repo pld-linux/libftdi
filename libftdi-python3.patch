@@ -1,0 +1,14 @@
+Fix Python 3 compatibility in configure script.
+The print statement without parentheses is Python 2 syntax only.
+
+--- libftdi-0.20/configure.in.orig	2010-01-21 17:51:42.000000000 +0100
++++ libftdi-0.20/configure.in	2010-01-21 17:51:42.000000000 +0100
+@@ -113,7 +113,7 @@
+ on.org])])
+ if test "$PYTHON"
+ then
+-     python_include_path=`$PYTHON -c "import distutils.sysconfig; print distutils.sysconfig.get_python_inc();"`
++     python_include_path=`$PYTHON -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"`
+      AC_CHECK_HEADERS([${python_include_path}/Python.h],
+                       [have_python_header=true],
+                       [AC_MSG_WARN([Python.h header file not found. Python development files are required to build presage python binding. Pyt
