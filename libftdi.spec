@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	python		# Python (3.x) binding
 %bcond_without	static_libs	# static libraries
 
 Summary:	Library to talk to FTDI's chips including the popular bitbang mode
@@ -18,10 +19,11 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	boost-devel >= 1.33
 BuildRequires:	libconfuse-devel
+BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel >= 0.1.0
-BuildRequires:	python3-devel
+%{?with_python:BuildRequires:	python3-devel >= 1:3.2}
 BuildRequires:	rpmbuild(macros) >= 1.527
-BuildRequires:	swig-python
+%{?with_python:BuildRequires:	swig-python >= 2}
 BuildConflicts:	libftdi-devel < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -118,6 +120,7 @@ Summary:	Python 3 binding for libftdi
 Summary(pl.UTF-8):	Wiązanie Pythona 3 do libftdi
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	python-libftdi < 0.20-6
 
 %description -n python3-libftdi
 Python 3 binding for libftdi.
@@ -130,13 +133,16 @@ Wiązanie Pythona 3 do libftdi.
 %patch -P0 -p1
 
 %build
-cp -f /usr/share/automake/config.sub .
+%{__libtoolize}
+%{__aclocal}
 %{__autoconf}
-PYTHON=%{__python3} \
+%{__autoheader}
+%{__automake}
 %configure \
+	PYTHON=%{__python3} \
 	%{__enable_disable static_libs static} \
 	--enable-libftdipp \
-	--enable-python-binding \
+	%{?with_python:--enable-python-binding} \
 	--with-boost-libdir=%{_libdir}
 %{__make}
 
@@ -149,12 +155,14 @@ rm -rf $RPM_BUILD_ROOT
 # useless example
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/simple
 # maybe useful
-mv $RPM_BUILD_ROOT%{_bindir}/{find_all,ftdi_find_all}
+%{__mv} $RPM_BUILD_ROOT%{_bindir}/{find_all,ftdi_find_all}
 # functionally the same as find_all, just adds C++ dependency
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/find_all_pp
 
+%if %{with python}
 %py3_comp $RPM_BUILD_ROOT%{py3_sitedir}
 %py3_ocomp $RPM_BUILD_ROOT%{py3_sitedir}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -210,10 +218,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libftdipp.a
 %endif
 
+%if %{with python}
 %files -n python3-libftdi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py3_sitedir}/_ftdi.cpython-*.so
 %{py3_sitedir}/ftdi.py
 %{py3_sitedir}/__pycache__/ftdi.cpython-*.py[co]
 %{py3_sitedir}/libftdi-%{version}-py*.egg-info
-
+%endif
